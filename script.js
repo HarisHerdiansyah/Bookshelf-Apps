@@ -16,7 +16,7 @@ document.addEventListener(render_event, function () {
   completeBook.innerHTML = '';
   uncompleteBook.innerHTML = '';
 
-  for (let bookItem of listBooks) {
+  for (const bookItem of listBooks) {
     const bookItemElement = createBookItemElement(bookItem);
     if (bookItem.isComplete) {
       completeBook.append(bookItemElement);
@@ -112,18 +112,32 @@ function createBookItemElement({
   deleteBtn.classList.add('btn', 'btn-danger', 'mt-4', 'ms-2');
   deleteBtn.innerText = 'Hapus data buku';
   deleteBtn.addEventListener('click', function () {
-    alert('tombol delete di klik');
+    const bookItemIndex = searchBookIndex(id);
+    if (bookItemIndex == -1) return;
+
+    listBooks.splice(bookItemIndex, 1);
+    document.dispatchEvent(new Event(render_event));
   });
 
   return card;
 }
 
 function searchBookItem(bookID) {
-  for (let bookItem of listBooks) {
+  for (const bookItem of listBooks) {
     if (bookItem.id == bookID) {
       return bookItem;
     }
   }
 
   return null;
+}
+
+function searchBookIndex(bookID) {
+  for (const i in listBooks) {
+    if (listBooks[i].id == bookID) {
+      return i;
+    }
+  }
+
+  return -1;
 }
