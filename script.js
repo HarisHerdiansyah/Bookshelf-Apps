@@ -1,10 +1,36 @@
-const bookArrayList = [];
+const listBooks = [];
+const render_event = 'render-book-item';
+
+document.addEventListener('DOMContentLoaded', function () {
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    addBookItem();
+  });
+});
+
+document.addEventListener(render_event, function () {
+  const completeBook = document.getElementById('completeBookList');
+  const uncompleteBook = document.getElementById('uncompleteBookList');
+
+  completeBook.innerHTML = '';
+  uncompleteBook.innerHTML = '';
+
+  for (let bookItem of listBooks) {
+    const bookItemElement = createBookItemElement(bookItem);
+    if (bookItem.isComplete) {
+      completeBook.append(bookItemElement);
+    } else {
+      uncompleteBook.append(bookItemElement);
+    }
+  }
+});
 
 function generateBookID() {
   return +new Date();
 }
 
-function bookObjectTemplate(id, title, author, year, isComplete) {
+function generateBookObject(id, title, author, year, isComplete) {
   return {
     id,
     title,
@@ -14,9 +40,26 @@ function bookObjectTemplate(id, title, author, year, isComplete) {
   };
 }
 
-function createHTMLBookObject({ title, author, year, isComplete }) {
-  const completeBook = document.getElementById('completeBookList');
-  const uncompleteBook = document.getElementById('uncompleteBookList');
+function addBookItem() {
+  const bookID = generateBookID();
+  const titleBook = document.getElementById('title').value;
+  const authorBook = document.getElementById('author').value;
+  const yearOfBook = document.getElementById('year').value;
+  const completeBox = document.getElementById('completeBox').checked;
+
+  const bookItem = generateBookObject(bookID, titleBook, authorBook, yearOfBook, completeBox);
+  listBooks.push(bookItem);
+
+  document.dispatchEvent(new Event(render_event));
+}
+
+function createBookItemElement({
+  id,
+  title,
+  author,
+  year,
+  isComplete
+}) {
   const card = document.createElement('div');
   const cardBody = document.createElement('div');
 
@@ -40,44 +83,47 @@ function createHTMLBookObject({ title, author, year, isComplete }) {
   action.classList.add('action');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
-  card.appendChild(cardBody);
+  card.append(cardBody);
 
   if (isComplete) {
     isCompleteBookStatus.innerText = 'Status : Selesai dibaca';
     switchBtn.innerText = 'Belum selesai dibaca';
     switchBtn.classList.add('btn', 'btn-primary', 'mt-4');
-    switchBtn.addEventListener('click', function() {
-      alert('belum selesai dibaca');
+    switchBtn.addEventListener('click', function () {
+      const bookItemTarget = searchBookItem(id);
+      if (bookItemTarget == null) return;
+
+      bookItemTarget.isComplete = false;
+      document.dispatchEvent(new Event(render_event));
     });
-    completeBook.appendChild(card);
   } else {
     isCompleteBookStatus.innerText = 'Status : Belum selesai dibaca';
     switchBtn.innerText = 'Selesai dibaca';
     switchBtn.classList.add('btn', 'btn-success', 'mt-4');
-    switchBtn.addEventListener('click', function() {
-      alert('selesai dibaca');
+    switchBtn.addEventListener('click', function () {
+      const bookItemTarget = searchBookItem(id);
+      if (bookItemTarget == null) return;
+
+      bookItemTarget.isComplete = true;
+      document.dispatchEvent(new Event(render_event));
     });
-    uncompleteBook.appendChild(card);
   }
 
   deleteBtn.classList.add('btn', 'btn-danger', 'mt-4', 'ms-2');
   deleteBtn.innerText = 'Hapus data buku';
-  deleteBtn.addEventListener('click', function() {
+  deleteBtn.addEventListener('click', function () {
     alert('tombol delete di klik');
   });
+
+  return card;
 }
 
-const submitBtn = document.getElementById('submitBtn');
-submitBtn.addEventListener('click', function () {
-  const bookID = generateBookID();
-  const titleBook = document.getElementById('title').value;
-  const authorBook = document.getElementById('author').value;
-  const yearOfBook = document.getElementById('year').value;
-  const completeBox = document.getElementById('completeBox').checked;
+function searchBookItem(bookID) {
+  for (let bookItem of listBooks) {
+    if (bookItem.id == bookID) {
+      return bookItem;
+    }
+  }
 
-  const bookObject = bookObjectTemplate(bookID, titleBook, authorBook, yearOfBook, completeBox);
-  bookArrayList.push(bookObject);
-  createHTMLBookObject(bookObject);
-
-  alert('data berhasil ditambahkan');
-});
+  return null;
+}

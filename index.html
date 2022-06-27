@@ -54,13 +54,13 @@
 
                 <div class="input mb-4">
                   <input type="checkbox" class="form-check-input" id="completeBox">
-                  <label class="form-check-label" for="isComplete">Selesai dibaca</label>
+                  <label class="form-check-label" for="completeBox">Selesai dibaca</label>
                 </div>
               </form>
             </section>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn text-light" id="submitBtn">Tambah</button>
+            <input type="submit" value="Tambah" id="submitBtn" class="btn text-light">
           </div>
         </div>
       </div>
@@ -70,12 +70,12 @@
 
     <div class="row my-5 bookshelf" aria-label="bookshelf">
       <!-- uncomplete book -->
-      <section class="col-5 uncompleteBookWrapper">
+      <section class="col-lg-5 uncompleteBookWrapper">
         <h2>Belum selesai dibaca</h2>
 
         <div id="uncompleteBookList">
 
-          <!-- <div class="card my-4">
+          <div class="card my-4">
             <div class="card-body">
               <h4>Hello World</h4>
               <p>Author : Jerinx SID</p>
@@ -86,19 +86,19 @@
                 <button type="button" class="btn btn-danger text-white mt-4" id="deleteBtn">Hapus data buku</button>
               </div>
             </div>
-          </div> -->
+          </div>
 
         </div>
       </section>
       <!-- end uncomplete book -->
 
       <!-- complete book -->
-      <section class="col-5 offset-1 completeBookWrapper">
+      <section class="col-lg-5 offset-lg-1 completeBookWrapper">
         <h2>Selesai dibaca</h2>
 
         <div id="completeBookList">
 
-          <!-- <div class="card my-4">
+          <div class="card my-4">
             <div class="card-body">
               <h4>Hello World</h4>
               <p>Author : Jerinx SID</p>
@@ -109,7 +109,7 @@
                 <button type="button" class="btn btn-danger mt-4" id="deleteBtn">Hapus data buku</button>
               </div>
             </div>
-          </div> -->
+          </div>
 
         </div>
       </section>
