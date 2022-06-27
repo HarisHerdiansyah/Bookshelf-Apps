@@ -1,5 +1,7 @@
 const listBooks = [];
 const render_event = 'render-book-item';
+const save_storage_event = 'save-book-item';
+const book_storage_key = 'List Book';
 
 document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.getElementById('submitBtn');
@@ -7,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     e.preventDefault();
     addBookItem();
   });
+
+  if (checkStorageBrowser()) {
+    renderDataFromStorage();
+  }
 });
 
 document.addEventListener(render_event, function () {
@@ -51,6 +57,7 @@ function addBookItem() {
   listBooks.push(bookItem);
 
   document.dispatchEvent(new Event(render_event));
+  saveData();
 }
 
 function createBookItemElement({
@@ -79,7 +86,8 @@ function createBookItemElement({
   const deleteBtn = document.createElement('button');
 
   card.classList.add('card', 'my-4');
-  cardBody.classList.add('card-body')
+  cardBody.classList.add('card-body');
+  titleBookElement.classList.add('mb-3');
   action.classList.add('action');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
@@ -95,6 +103,7 @@ function createBookItemElement({
 
       bookItemTarget.isComplete = false;
       document.dispatchEvent(new Event(render_event));
+      saveData();
     });
   } else {
     isCompleteBookStatus.innerText = 'Status : Belum selesai dibaca';
@@ -106,6 +115,7 @@ function createBookItemElement({
 
       bookItemTarget.isComplete = true;
       document.dispatchEvent(new Event(render_event));
+      saveData();
     });
   }
 
@@ -117,6 +127,7 @@ function createBookItemElement({
 
     listBooks.splice(bookItemIndex, 1);
     document.dispatchEvent(new Event(render_event));
+    saveData();
   });
 
   return card;
@@ -140,4 +151,33 @@ function searchBookIndex(bookID) {
   }
 
   return -1;
+}
+
+function checkStorageBrowser() {
+  if (typeof Storage != undefined) {
+    return true;
+  }
+
+  return false;
+}
+
+function saveData() {
+  if (checkStorageBrowser()) {
+    const listBooksParse = JSON.stringify(listBooks);
+    localStorage.setItem(book_storage_key, listBooksParse);
+    document.dispatchEvent(new Event(save_storage_event));
+  }
+}
+
+function renderDataFromStorage() {
+  const getBookData = localStorage.getItem(book_storage_key);
+  let dataBook = JSON.parse(getBookData);
+
+  if (dataBook != null) {
+    for (const book of dataBook) {
+      listBooks.push(book);
+    }
+  }
+
+  document.dispatchEvent(new Event(render_event));
 }
