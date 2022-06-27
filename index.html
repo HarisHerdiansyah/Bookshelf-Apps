@@ -21,12 +21,13 @@
 
   <main class="container my-5">
 
-    <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#myModal">
+    <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
       Tambah data buku
     </button>
 
     <!-- input data buku -->
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -52,7 +53,7 @@
                 </div>
 
                 <div class="input mb-4">
-                  <input type="checkbox" class="form-check-input" id="isComplete">
+                  <input type="checkbox" class="form-check-input" id="completeBox">
                   <label class="form-check-label" for="isComplete">Selesai dibaca</label>
                 </div>
               </form>
@@ -67,7 +68,6 @@
     <!-- end input data buku -->
 
 
-    <!-- section "belum selesai dibaca" -->
     <div class="row my-5 bookshelf" aria-label="bookshelf">
       <!-- uncomplete book -->
       <section class="col-5 uncompleteBookWrapper">
@@ -75,33 +75,18 @@
 
         <div id="uncompleteBookList">
 
-          <div class="card my-4">
+          <!-- <div class="card my-4">
             <div class="card-body">
               <h4>Hello World</h4>
               <p>Author : Jerinx SID</p>
               <p>Year : 2021</p>
-              <p>Lorem, ipsum dolor.</p>
 
               <div class="action">
                 <button type="button" class="btn btn-success mt-4" id="completeBtn">Selesai dibaca</button>
                 <button type="button" class="btn btn-danger text-white mt-4" id="deleteBtn">Hapus data buku</button>
               </div>
             </div>
-          </div>
-
-          <div class="card my-4">
-            <div class="card-body">
-              <h4>Hello World</h4>
-              <p>Author : Jerinx SID</p>
-              <p>Year : 2021</p>
-              <p>Lorem, ipsum dolor.</p>
-
-              <div class="action">
-                <button type="button" class="btn btn-success mt-4" id="completeBtn">Selesai dibaca</button>
-                <button type="button" class="btn btn-danger text-white mt-4" id="deleteBtn">Hapus data buku</button>
-              </div>
-            </div>
-          </div>
+          </div> -->
 
         </div>
       </section>
@@ -113,47 +98,18 @@
 
         <div id="completeBookList">
 
-          <div class="card my-4">
+          <!-- <div class="card my-4">
             <div class="card-body">
               <h4>Hello World</h4>
               <p>Author : Jerinx SID</p>
               <p>Year : 2021</p>
-              <p>Lorem, ipsum dolor.</p>
 
               <div class="action">
                 <button type="button" class="btn btn-primary mt-4" id="uncompleteBtn">Belum selesai dibaca</button>
                 <button type="button" class="btn btn-danger mt-4" id="deleteBtn">Hapus data buku</button>
               </div>
             </div>
-          </div>
-
-          <div class="card my-4">
-            <div class="card-body">
-              <h4>Hello World</h4>
-              <p>Author : Jerinx SID</p>
-              <p>Year : 2021</p>
-              <p>Lorem, ipsum dolor.</p>
-
-              <div class="action">
-                <button type="button" class="btn btn-primary mt-4" id="uncompleteBtn">Belum selesai dibaca</button>
-                <button type="button" class="btn btn-danger mt-4" id="deleteBtn">Hapus data buku</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card my-4">
-            <div class="card-body">
-              <h4>Hello World</h4>
-              <p>Author : Jerinx SID</p>
-              <p>Year : 2021</p>
-              <p>Lorem, ipsum dolor.</p>
-
-              <div class="action">
-                <button type="button" class="btn btn-primary mt-4" id="uncompleteBtn">Belum selesai dibaca</button>
-                <button type="button" class="btn btn-danger mt-4" id="deleteBtn">Hapus data buku</button>
-              </div>
-            </div>
-          </div>
+          </div> -->
 
         </div>
       </section>
@@ -167,6 +123,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
   </script>
+  <script src="script.js"></script>
 </body>
 
 </html>
