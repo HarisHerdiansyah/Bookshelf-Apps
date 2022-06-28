@@ -11,7 +11,8 @@
   <style>
     header,
     #submitBtn,
-    button[data-bs-toggle="modal"] {
+    #editBtn,
+    #addBtn {
       background-image: radial-gradient(circle 610px at 5.2% 51.6%, rgba(5, 8, 114, 1) 0%, rgba(7, 3, 53, 1) 97.5%);
     }
 
@@ -42,7 +43,8 @@
       <h1 class="text-light">Bookshelf Apps</h1>
 
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Cari data buku...." aria-label="Search" id="search_bar">
+        <input class="form-control me-2" type="search" placeholder="Cari data buku...." aria-label="Search"
+          id="search_bar">
         <button class="btn btn-light" id="searchBtn" type="button">Cari</button>
       </form>
     </div>
@@ -50,13 +52,13 @@
 
   <main class="container my-5">
 
-    <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#modal_input">
+    <button type="button" class="btn text-white" data-bs-toggle="modal" data-bs-target="#modal_input" id="addBtn">
       Tambah data buku
     </button>
 
     <!-- input data buku -->
-    <div class="modal fade modal-input" id="modal_input" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade modal-input" id="modal_input" data-bs-backdrop="static" data-bs-keyboard="false"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -118,6 +120,38 @@
       </section>
       <!-- end complete book -->
     </div>
+
+    <!-- modal edit -->
+    <div class="modal fade" id="edit-modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit data buku</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="edit mb-4">
+              <label for="title">Judul Buku</label>
+              <input type="text" class="form-control" id="title-edit" required>
+            </div>
+
+            <div class="edit mb-4">
+              <label for="title">Penulis</label>
+              <input type="text" class="form-control" id="author-edit" required>
+            </div>
+
+            <div class="edit mb-4">
+              <label for="title">Tahun</label>
+              <input type="number" class="form-control" id="year-edit" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn text-white" id="editBtn">Edit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end modal edit -->
 
   </main>
 

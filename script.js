@@ -4,7 +4,6 @@ const save_storage_event = 'save-book-item';
 const book_storage_key = 'List Book';
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('search_bar');
-const render_search = 'render-search';
 
 document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.getElementById('submitBtn');
@@ -84,6 +83,9 @@ function createBookItemElement({
 
   const isCompleteBookStatus = document.createElement('p');
 
+  const editBtn = document.createElement('button');
+  editBtn.innerText = 'Edit';
+
   const action = document.createElement('div');
   const switchBtn = document.createElement('button');
   const deleteBtn = document.createElement('button');
@@ -93,6 +95,10 @@ function createBookItemElement({
   titleBookElement.classList.add('mb-3', 'title');
   authorBookElement.classList.add('author');
   yearOfBookElement.classList.add('year');
+  editBtn.setAttribute('data-bs-toggle', 'modal');
+  editBtn.setAttribute('data-bs-target', '#edit-modal');
+  editBtn.classList.add('btn', 'btn-light', 'float-end');
+  titleBookElement.append(editBtn);
   action.classList.add('action', 'mt-4', 'd-flex', 'flex-wrap', 'gap-2');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
@@ -187,7 +193,7 @@ function renderDataFromStorage() {
   document.dispatchEvent(new Event(render_event));
 }
 
-document.addEventListener(render_search, function () {
+searchBtn.addEventListener('click', function () {
   for (let i = 0; i < listBooks.length; i++) {
     let searchTitle = document.querySelectorAll('.card-body>.title');
     let searchAuthor = document.querySelectorAll('.card-body>.author');
@@ -201,8 +207,4 @@ document.addEventListener(render_search, function () {
       document.querySelectorAll('.card')[i].style.display = 'none';
     }
   }
-});
-
-searchBtn.addEventListener('click', function () {
-  document.dispatchEvent(new Event(render_search));
 });
