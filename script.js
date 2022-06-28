@@ -84,6 +84,9 @@ function createBookItemElement({
 
   const isCompleteBookStatus = document.createElement('p');
 
+  const editBtn = document.createElement('button');
+  editBtn.innerText = 'Edit';
+
   const action = document.createElement('div');
   const switchBtn = document.createElement('button');
   const deleteBtn = document.createElement('button');
@@ -91,8 +94,10 @@ function createBookItemElement({
   card.classList.add('card', 'my-4');
   cardBody.classList.add('card-body');
   titleBookElement.classList.add('mb-3', 'title');
+  titleBookElement.append(editBtn);
   authorBookElement.classList.add('author');
   yearOfBookElement.classList.add('year');
+  editBtn.classList.add('btn', 'btn-light', 'float-end');
   action.classList.add('action', 'mt-4', 'd-flex', 'flex-wrap', 'gap-2');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
