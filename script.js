@@ -2,6 +2,9 @@ const listBooks = [];
 const render_event = 'render-book-item';
 const save_storage_event = 'save-book-item';
 const book_storage_key = 'List Book';
+const searchBtn = document.getElementById('searchBtn');
+const searchBar = document.getElementById('search_bar');
+const render_search = 'render-search';
 
 document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.getElementById('submitBtn');
@@ -87,8 +90,10 @@ function createBookItemElement({
 
   card.classList.add('card', 'my-4');
   cardBody.classList.add('card-body');
-  titleBookElement.classList.add('mb-3');
-  action.classList.add('action');
+  titleBookElement.classList.add('mb-3', 'title');
+  authorBookElement.classList.add('author');
+  yearOfBookElement.classList.add('year');
+  action.classList.add('action', 'mt-4', 'd-flex', 'flex-wrap', 'gap-2');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
   card.append(cardBody);
@@ -96,7 +101,7 @@ function createBookItemElement({
   if (isComplete) {
     isCompleteBookStatus.innerText = 'Status : Selesai dibaca';
     switchBtn.innerText = 'Belum selesai dibaca';
-    switchBtn.classList.add('btn', 'btn-primary', 'mt-4');
+    switchBtn.classList.add('btn', 'btn-primary');
     switchBtn.addEventListener('click', function () {
       const bookItemTarget = searchBookItem(id);
       if (bookItemTarget == null) return;
@@ -108,7 +113,7 @@ function createBookItemElement({
   } else {
     isCompleteBookStatus.innerText = 'Status : Belum selesai dibaca';
     switchBtn.innerText = 'Selesai dibaca';
-    switchBtn.classList.add('btn', 'btn-success', 'mt-4');
+    switchBtn.classList.add('btn', 'btn-success');
     switchBtn.addEventListener('click', function () {
       const bookItemTarget = searchBookItem(id);
       if (bookItemTarget == null) return;
@@ -119,7 +124,7 @@ function createBookItemElement({
     });
   }
 
-  deleteBtn.classList.add('btn', 'btn-danger', 'mt-4', 'ms-2');
+  deleteBtn.classList.add('btn', 'btn-danger');
   deleteBtn.innerText = 'Hapus data buku';
   deleteBtn.addEventListener('click', function () {
     const bookItemIndex = searchBookIndex(id);
@@ -181,3 +186,23 @@ function renderDataFromStorage() {
 
   document.dispatchEvent(new Event(render_event));
 }
+
+document.addEventListener(render_search, function () {
+  for (let i = 0; i < listBooks.length; i++) {
+    let searchTitle = document.querySelectorAll('.card-body>.title');
+    let searchAuthor = document.querySelectorAll('.card-body>.author');
+    let searchYear = document.querySelectorAll('.card-body>.year');
+
+    if (searchTitle[i].textContent.includes(searchBar.value) ||
+      searchAuthor[i].textContent.includes(searchBar.value) ||
+      searchYear[i].textContent.includes(searchBar.value)) {
+      document.querySelectorAll('.card')[i].style.display = 'block';
+    } else {
+      document.querySelectorAll('.card')[i].style.display = 'none';
+    }
+  }
+});
+
+searchBtn.addEventListener('click', function () {
+  document.dispatchEvent(new Event(render_search));
+});
