@@ -4,6 +4,8 @@ const save_storage_event = 'save-book-item';
 const book_storage_key = 'List Book';
 const searchBtn = document.getElementById('searchBtn');
 const searchBar = document.getElementById('search_bar');
+const editBtn = document.getElementById('editBtn');
+let temp = null;
 
 document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.getElementById('submitBtn');
@@ -20,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener(render_event, function () {
   const completeBook = document.getElementById('completeBookList');
   const uncompleteBook = document.getElementById('uncompleteBookList');
-
   completeBook.innerHTML = '';
   uncompleteBook.innerHTML = '';
 
@@ -83,8 +84,8 @@ function createBookItemElement({
 
   const isCompleteBookStatus = document.createElement('p');
 
-  const editBtn = document.createElement('button');
-  editBtn.innerText = 'Edit';
+  const triggerModalEdit = document.createElement('button');
+  triggerModalEdit.innerText = 'Edit';
 
   const action = document.createElement('div');
   const switchBtn = document.createElement('button');
@@ -95,14 +96,12 @@ function createBookItemElement({
   titleBookElement.classList.add('mb-3', 'title');
   authorBookElement.classList.add('author');
   yearOfBookElement.classList.add('year');
-  editBtn.setAttribute('data-bs-toggle', 'modal');
-  editBtn.setAttribute('data-bs-target', '#edit-modal');
-  editBtn.classList.add('btn', 'btn-light', 'float-end');
-  titleBookElement.append(editBtn);
+  titleBookElement.append(triggerModalEdit);
   action.classList.add('action', 'mt-4', 'd-flex', 'flex-wrap', 'gap-2');
   action.append(switchBtn, deleteBtn);
   cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
   card.append(cardBody);
+
 
   if (isComplete) {
     isCompleteBookStatus.innerText = 'Status : Selesai dibaca';
@@ -139,6 +138,17 @@ function createBookItemElement({
     listBooks.splice(bookItemIndex, 1);
     document.dispatchEvent(new Event(render_event));
     saveData();
+  });
+
+  triggerModalEdit.setAttribute('data-bs-toggle', 'modal');
+  triggerModalEdit.setAttribute('data-bs-target', '#edit-modal');
+  triggerModalEdit.classList.add('btn', 'btn-light', 'float-end');
+  triggerModalEdit.addEventListener('click', function () {
+    temp = searchBookIndex(id);
+
+    document.getElementById('title-edit').value = listBooks[parseInt(temp)].title;
+    document.getElementById('author-edit').value = listBooks[parseInt(temp)].author;
+    document.getElementById('year-edit').value = listBooks[parseInt(temp)].year;
   });
 
   return card;
@@ -195,16 +205,34 @@ function renderDataFromStorage() {
 
 searchBtn.addEventListener('click', function () {
   for (let i = 0; i < listBooks.length; i++) {
-    let searchTitle = document.querySelectorAll('.card-body>.title');
-    let searchAuthor = document.querySelectorAll('.card-body>.author');
-    let searchYear = document.querySelectorAll('.card-body>.year');
+    let searchFromTitle = document.querySelectorAll('.card-body>.title');
+    let searchFromAuthor = document.querySelectorAll('.card-body>.author');
+    let searchFromYear = document.querySelectorAll('.card-body>.year');
 
-    if (searchTitle[i].textContent.includes(searchBar.value) ||
-      searchAuthor[i].textContent.includes(searchBar.value) ||
-      searchYear[i].textContent.includes(searchBar.value)) {
+    if (searchFromTitle[i].textContent.includes(searchBar.value) ||
+      searchFromAuthor[i].textContent.includes(searchBar.value) ||
+      searchFromYear[i].textContent.includes(searchBar.value)) {
       document.querySelectorAll('.card')[i].style.display = 'block';
     } else {
       document.querySelectorAll('.card')[i].style.display = 'none';
     }
   }
+});
+
+editBtn.addEventListener('click', function () {
+  const titleEditValue = document.getElementById('title-edit').value;
+  const authorEditValue = document.getElementById('author-edit').value;
+  const yearEditValue = document.getElementById('year-edit').value;
+
+  listBooks[parseInt(temp)].title = titleEditValue;
+  listBooks[parseInt(temp)].author = authorEditValue;
+  listBooks[parseInt(temp)].year = yearEditValue;
+
+  const completeBook = document.getElementById('completeBookList');
+  const uncompleteBook = document.getElementById('uncompleteBookList');
+  completeBook.innerHTML = '';
+  uncompleteBook.innerHTML = '';
+
+  document.dispatchEvent(new Event(render_event));
+  saveData();
 });
