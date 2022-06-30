@@ -69,44 +69,46 @@ function addBookItem() {
   saveData();
 }
 
-function createBookItemElement({
-  id,
-  title,
-  author,
-  year,
-  isComplete
-}) {
-  const card = document.createElement('div');
+function createBookItemElement({id, title, author, year, isComplete}) {
+  const mainCard = document.createElement('div');
+  mainCard.classList.add('card', 'my-4');
+
   const cardBody = document.createElement('div');
+  cardBody.classList.add('card-body');
 
-  const titleBookElement = document.createElement('h4');
-  titleBookElement.innerText = title;
+  const titleElement = document.createElement('h4');
+  titleElement.innerText = title;
+  titleElement.classList.add('mb-3', 'title');
 
-  const authorBookElement = document.createElement('p');
-  authorBookElement.innerText = `Author : ${author}`;
+  const authorElement = document.createElement('p');
+  authorElement.innerText = `Author : ${author}`;
+  authorElement.classList.add('author');
 
-  const yearOfBookElement = document.createElement('p');
-  yearOfBookElement.innerText = `Tahun : ${year}`;
+  const yearElement = document.createElement('p');
+  yearElement.innerText = `Tahun : ${year}`;
+  yearElement.classList.add('year');
 
   const isCompleteBookStatus = document.createElement('p');
 
-  const triggerModalEdit = document.createElement('button');
-  triggerModalEdit.innerText = 'Ubah';
+  const showModalEdit = document.createElement('button');
+  showModalEdit.innerText = 'Ubah';
+  showModalEdit.setAttribute('data-bs-toggle', 'modal');
+  showModalEdit.setAttribute('data-bs-target', '#edit-modal');
+  showModalEdit.classList.add('btn', 'btn-light', 'float-end');
 
   const action = document.createElement('div');
-  const switchBtn = document.createElement('button');
-  const deleteBtn = document.createElement('button');
-
-  card.classList.add('card', 'my-4');
-  cardBody.classList.add('card-body');
-  titleBookElement.classList.add('mb-3', 'title');
-  authorBookElement.classList.add('author');
-  yearOfBookElement.classList.add('year');
-  titleBookElement.append(triggerModalEdit);
   action.classList.add('action', 'mt-4', 'd-flex', 'flex-wrap', 'gap-2');
+
+  const switchBtn = document.createElement('button');
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.innerText = 'Hapus data buku';
+  deleteBtn.classList.add('btn', 'btn-danger');
+
+  titleElement.append(showModalEdit);
   action.append(switchBtn, deleteBtn);
-  cardBody.append(titleBookElement, authorBookElement, yearOfBookElement, isCompleteBookStatus, action);
-  card.append(cardBody);
+  cardBody.append(titleElement, authorElement, yearElement, isCompleteBookStatus, action);
+  mainCard.append(cardBody);
 
 
   if (isComplete) {
@@ -147,8 +149,6 @@ function createBookItemElement({
     });
   }
 
-  deleteBtn.classList.add('btn', 'btn-danger');
-  deleteBtn.innerText = 'Hapus data buku';
   deleteBtn.addEventListener('click', function () {
     const bookItemIndex = searchBookIndex(id);
     if (bookItemIndex == -1) return;
@@ -164,10 +164,7 @@ function createBookItemElement({
     );
   });
 
-  triggerModalEdit.setAttribute('data-bs-toggle', 'modal');
-  triggerModalEdit.setAttribute('data-bs-target', '#edit-modal');
-  triggerModalEdit.classList.add('btn', 'btn-light', 'float-end');
-  triggerModalEdit.addEventListener('click', function () {
+  showModalEdit.addEventListener('click', function () {
     temp = searchBookIndex(id);
 
     document.getElementById('title-edit').value = listBooks[parseInt(temp)].title;
@@ -175,7 +172,7 @@ function createBookItemElement({
     document.getElementById('year-edit').value = listBooks[parseInt(temp)].year;
   });
 
-  return card;
+  return mainCard;
 }
 
 function searchBookItem(bookID) {
@@ -229,13 +226,13 @@ function renderDataFromStorage() {
 
 searchBtn.addEventListener('click', function () {
   for (let i = 0; i < listBooks.length; i++) {
-    let searchFromTitle = document.querySelectorAll('.card-body>.title');
-    let searchFromAuthor = document.querySelectorAll('.card-body>.author');
-    let searchFromYear = document.querySelectorAll('.card-body>.year');
+    let searchTitle = document.querySelectorAll('.card-body>.title');
+    let searchAuthor = document.querySelectorAll('.card-body>.author');
+    let searchYear = document.querySelectorAll('.card-body>.year');
 
-    if (searchFromTitle[i].textContent.includes(searchBar.value) ||
-      searchFromAuthor[i].textContent.includes(searchBar.value) ||
-      searchFromYear[i].textContent.includes(searchBar.value)) {
+    if (searchTitle[i].textContent.includes(searchBar.value) ||
+      searchAuthor[i].textContent.includes(searchBar.value) ||
+      searchYear[i].textContent.includes(searchBar.value)) {
       document.querySelectorAll('.card')[i].style.display = 'block';
     } else {
       document.querySelectorAll('.card')[i].style.display = 'none';
@@ -244,8 +241,6 @@ searchBtn.addEventListener('click', function () {
 });
 
 editBtn.addEventListener('click', function () {
-
-
   const titleEditValue = document.getElementById('title-edit').value;
   const authorEditValue = document.getElementById('author-edit').value;
   const yearEditValue = document.getElementById('year-edit').value;
@@ -253,11 +248,6 @@ editBtn.addEventListener('click', function () {
   listBooks[parseInt(temp)].title = titleEditValue;
   listBooks[parseInt(temp)].author = authorEditValue;
   listBooks[parseInt(temp)].year = yearEditValue;
-
-  const completeBook = document.getElementById('completeBookList');
-  const uncompleteBook = document.getElementById('uncompleteBookList');
-  completeBook.innerHTML = '';
-  uncompleteBook.innerHTML = '';
 
   document.dispatchEvent(new Event(render_event));
   saveData();
