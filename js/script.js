@@ -10,6 +10,12 @@ let temp = null;
 document.addEventListener('DOMContentLoaded', function () {
   const submitBtn = document.getElementById('submitBtn');
   submitBtn.addEventListener('click', function (e) {
+    Swal.fire(
+      'Berhasil ditambahkan!',
+      'Data buku telah berhasil ditambahkan.',
+      'success'
+    );
+    
     e.preventDefault();
     addBookItem();
   });
@@ -85,7 +91,7 @@ function createBookItemElement({
   const isCompleteBookStatus = document.createElement('p');
 
   const triggerModalEdit = document.createElement('button');
-  triggerModalEdit.innerText = 'Edit';
+  triggerModalEdit.innerText = 'Ubah';
 
   const action = document.createElement('div');
   const switchBtn = document.createElement('button');
@@ -114,6 +120,12 @@ function createBookItemElement({
       bookItemTarget.isComplete = false;
       document.dispatchEvent(new Event(render_event));
       saveData();
+
+      Swal.fire(
+        'Status buku berubah!',
+        'Buku belum selesai dibaca, segera selesaikan bacaan anda!',
+        'info'
+      );
     });
   } else {
     isCompleteBookStatus.innerText = 'Status : Belum selesai dibaca';
@@ -126,6 +138,12 @@ function createBookItemElement({
       bookItemTarget.isComplete = true;
       document.dispatchEvent(new Event(render_event));
       saveData();
+
+      Swal.fire(
+        'Status buku berubah!',
+        'Selamat! Buku ini telah selesai dibaca!',
+        'success'
+      );
     });
   }
 
@@ -138,6 +156,12 @@ function createBookItemElement({
     listBooks.splice(bookItemIndex, 1);
     document.dispatchEvent(new Event(render_event));
     saveData();
+
+    Swal.fire(
+      'Data dihapus!',
+      'Data buku telah dihapus.',
+      'info'
+    );
   });
 
   triggerModalEdit.setAttribute('data-bs-toggle', 'modal');
@@ -220,6 +244,8 @@ searchBtn.addEventListener('click', function () {
 });
 
 editBtn.addEventListener('click', function () {
+
+
   const titleEditValue = document.getElementById('title-edit').value;
   const authorEditValue = document.getElementById('author-edit').value;
   const yearEditValue = document.getElementById('year-edit').value;
@@ -235,4 +261,10 @@ editBtn.addEventListener('click', function () {
 
   document.dispatchEvent(new Event(render_event));
   saveData();
+
+  Swal.fire(
+    'Berhasil diubah!',
+    'Data buku telah berhasil diubah.',
+    'success'
+  );
 });
